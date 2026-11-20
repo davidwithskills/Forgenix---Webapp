@@ -39,7 +39,7 @@ Render's `RENDER_EXTERNAL_URL` is used as the public URL if `PUBLIC_URL` is omit
 
 ## GitHub Pages landing page
 
-The static introduction lives in `docs/index.html`; it links visitors to the full Flask app on Render. A GitHub Actions workflow publishes it when `docs/` changes. In the repository, open **Settings → Pages**, choose **GitHub Actions** as the build and deployment source, and save. The landing page will then be available at `https://davidwithskills.github.io/Forgenix---Webapp/`. GitHub Pages only hosts the static landing page; accounts, progress syncing, and checkout stay on the Flask service.
+The static introduction lives in `docs/index.html`; it links visitors to the full Flask app on Render. The plans dialog compares the free starter and optional Pro preview; continuing to Pro opens the app account page, where the server-side Interswitch test checkout lives. The dialog warns that test checkout cannot accept real payments. A GitHub Actions workflow publishes the landing page when `docs/` changes. The published page is at `https://davidwithskills.github.io/Forgenix---Webapp/`. GitHub Pages only hosts the static landing page; accounts, progress syncing, and checkout stay on the Flask service.
 
 ## Payments
 

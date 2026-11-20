@@ -258,6 +258,8 @@ async function start(){
     }catch(error){console.warn("Account status is unavailable; continuing with this device's saved progress:",error);S.user=null;S.proUntil=0;announce("You are offline. Progress will remain on this device until you can sync again.","info",true)}
     if(new URLSearchParams(location.search).get("paid")==="1")announce("Payment confirmed. Your optional Pro subscription is active.","success",true);
     if(new URLSearchParams(location.search).get("failed")==="1")announce("Payment could not be confirmed. If money left your account, contact support with your payment reference.","error",true);
+    const requestedView=new URLSearchParams(location.search).get("view");
+    if(["home","path","progress","account"].includes(requestedView))S.view=requestedView;
     history.replaceState(null,"",location.pathname);
     render();
   }catch(error){console.error("Could not initialize the learning space:",error);root.innerHTML='<section class="card error"><h2>We could not load your learning space</h2><p class="muted">'+esc(error.message)+'</p><button class="btn" onclick="location.reload()">Try again</button></section>'}
