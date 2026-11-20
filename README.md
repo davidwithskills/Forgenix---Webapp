@@ -23,6 +23,7 @@ python -m unittest discover -s tests -v
 - Guest progress is saved in browser storage on that device. Creating a free account uploads progress and makes it available when signing in elsewhere.
 - Accounts store an email address, a password hash, the selected path, weekly pace, completed modules, and subscription expiry. They do not store payment-card details.
 - Use a persistent database volume in a hosted deployment. For example, mount a durable volume at `/var/data` and set `DATABASE_PATH=/var/data/forgenix.sqlite3`. If the host's filesystem is ephemeral, account progress and subscriptions can be lost when the service restarts; migrate to a managed database before relying on them.
+- The current Render service is on the Free plan, whose local filesystem is ephemeral. The account screen warns users; do not rely on cross-device account sync or subscriptions there until durable storage is configured.
 
 ## Deploy to a Python host
 

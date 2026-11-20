@@ -283,6 +283,7 @@ def public_config():
     return jsonify(
         payment_mode="LIVE" if LIVE else "TEST",
         payments_available=payments_available,
+        hosted=PUBLIC_URL != "http://localhost:5000",
     )
 
 

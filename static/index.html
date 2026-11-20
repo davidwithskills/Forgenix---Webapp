@@ -51,7 +51,7 @@ const GOALS=["Product Design","Product Management","AI & Machine Learning","Data
 const HOURS=[["1–2 hours",2],["3–5 hours",4],["6+ hours",7]];
 const STORAGE_KEY="forgenix-learner-v2";
 const EMPTY={goal:"",hours:4,completed:{}};
-const S={view:"home",lesson:"",paths:{},goal:"",hours:4,completed:{},user:null,proUntil:0,paymentMode:"TEST",paymentsAvailable:true,authMode:"register",busy:false};
+const S={view:"home",lesson:"",paths:{},goal:"",hours:4,completed:{},user:null,proUntil:0,paymentMode:"TEST",paymentsAvailable:true,hosted:false,authMode:"register",busy:false};
 const root=document.getElementById("app");
 const notice=document.getElementById("notice");
 let noticeTimer;
@@ -152,6 +152,7 @@ function progressView(){
 function accountView(){
   const activePro=S.proUntil>Date.now()/1000;
   let html='<div class="eyebrow">Your account</div><h2>'+(S.user?"Welcome back":"Keep your learning in sync")+'</h2>';
+  if(S.hosted)html+='<section class="card error"><h3>Demo storage notice</h3><p class="muted small">This hosted demo stores accounts in a local SQLite file. On Render Free, that file may be cleared when the service restarts. Do not rely on account sync or subscriptions for important data until durable database storage is configured.</p></section>';
   if(S.user){
     html+='<section class="card"><div class="between"><div><h3>'+esc(S.user)+'</h3><p class="muted small">Free Forgenix account</p></div><span class="tag good">Signed in</span></div><p class="muted">Your learning path and completed modules sync with this account.</p><button class="btn secondary" data-action="logout">Sign out</button></section>';
   }else{
@@ -243,7 +244,7 @@ async function start(){
     const pathsResponse=await fetch("/static/paths.json");
     if(!pathsResponse.ok)throw new Error("Learning paths could not be loaded. Check your connection and try again.");
     S.paths=await pathsResponse.json();
-    try{const config=await api("/api/config");S.paymentMode=config.payment_mode;S.paymentsAvailable=config.payments_available}
+    try{const config=await api("/api/config");S.paymentMode=config.payment_mode;S.paymentsAvailable=config.payments_available;S.hosted=config.hosted}
     catch(error){console.warn("Server settings are unavailable; account and payment actions require a connection:",error);S.paymentsAvailable=false;announce("Offline mode: your saved learning path is available on this device. Accounts and checkout need a connection.","info",true)}
     applyState(readLocal());
     try{
