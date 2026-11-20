@@ -1,0 +1,9 @@
+{
+  "_readme": "One entry per module. 'default' applies to every goal. To give a goal its own sources, add a key with that goal's exact name and an array of 4 entries (use null to fall back to default). Only list material whose licence you have checked. Remember: licences that forbid commercial use (NC) are not safe behind a paid plan.",
+  "default": [
+    {"source": "To be added", "licence": "to be confirmed", "url": "", "checked": ""},
+    {"source": "To be added", "licence": "to be confirmed", "url": "", "checked": ""},
+    {"source": "Forgenix assessment (original)", "licence": "© Forgenix", "url": "", "checked": ""},
+    {"source": "Peer contributors", "licence": "licensed to Forgenix under platform terms", "url": "", "checked": ""}
+  ]
+}

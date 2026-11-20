@@ -1,0 +1,24 @@
+{
+  "name": "Forgenix",
+  "short_name": "Forgenix",
+  "description": "Bridging people to tech. Learn, work and teach with verified skills.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f4f5f7",
+  "theme_color": "#1f6fe5",
+  "icons": [
+    {
+      "src": "/static/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/static/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

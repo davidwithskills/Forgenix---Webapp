@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Forgenix</title>
+<meta name="theme-color" content="#1f6fe5">
+<link rel="icon" href="/static/logo.png">
+<link rel="apple-touch-icon" href="/static/icon-192.png">
+<link rel="manifest" href="/static/manifest.json">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--tx:#0b1220;--mu:#53607a;--ac:#1f6fe5;--ac2:#e3eeff;--vi:#14213d;--bd:#d6deeb;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b0d12;--card:#141922;--tx:#eef2f8;--mu:#9aa6b8;--ac:#3d9bff;--ac2:#12263f;--vi:#9ec5ff;--bd:#242c3a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0b0d12;--card:#141922;--tx:#eef2f8;--mu:#9aa6b8;--ac:#3d9bff;--ac2:#12263f;--vi:#9ec5ff;--bd:#242c3a;color-scheme:dark}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--tx);font-family:"Bricolage Grotesque",system-ui,sans-serif;line-height:1.5;min-height:100vh}
+main{max-width:480px;margin:0 auto;padding:16px}
+h1{font-size:1.5rem;font-weight:800;margin:0;letter-spacing:.08em}h1 span{color:var(--ac)}
+h2{font-size:1.3rem;margin:14px 0 6px}p{margin:.3rem 0}.mu{color:var(--mu);font-size:.9rem}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.steps{display:flex;gap:6px;margin:12px 0}.steps i{flex:1;height:5px;border-radius:3px;background:var(--bd)}.steps i.on{background:var(--ac)}
+.lanes{display:flex;gap:6px;margin:8px 0}.lanes b{flex:1;text-align:center;font-size:.8rem;padding:4px;border-radius:8px;background:var(--ac2);color:var(--ac)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.chip{font:inherit;border:2px solid var(--bd);background:var(--card);color:var(--tx);border-radius:20px;padding:8px 14px;cursor:pointer;min-height:44px}
+.chip.on{border-color:var(--ac);background:var(--ac2);font-weight:600}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin:10px 0}
+.card.lock{opacity:.55}
+.tag{font-size:.75rem;border-radius:8px;padding:2px 8px;background:var(--ac2);color:var(--ac);font-weight:600;white-space:nowrap}
+.tag.v{background:var(--bd);color:var(--vi)}
+.n{display:inline-block;width:26px;height:26px;border-radius:50%;background:var(--vi);color:var(--bg);text-align:center;font-weight:700;margin-right:8px}
+button.b{font:inherit;font-weight:600;border-radius:10px;border:2px solid var(--ac);background:var(--ac);color:#fff;padding:10px 16px;cursor:pointer;min-height:44px}
+:root[data-theme="dark"] button.b{color:#0b0d12}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) button.b{color:#0b0d12}}
+button.b.o{background:transparent;color:var(--ac)}button.b[disabled]{opacity:.5}
+.row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+button:focus-visible{outline:3px solid var(--tx);outline-offset:2px}
+.ov{position:fixed;inset:0;background:rgba(10,6,20,.6);display:flex;align-items:flex-end;justify-content:center;padding:0}
+.box{background:var(--card);width:100%;max-width:480px;border-radius:18px 18px 0 0;padding:18px 18px calc(18px + env(safe-area-inset-bottom,0px))}
+.ok{border-color:var(--vi)}
+</style></head><body><main id="app"></main>
+<script>
+var G=["Product Design","Product Management","AI & Machine Learning","Data & Analytics","Cybersecurity","Digital Marketing","Software Engineering","Not sure yet"];
+var H=[["1–2 hrs",2],["3–5 hrs",4],["6+ hrs",7]];
+var SRC={};var S={step:1,goal:"",hrs:4,pro:false,ref:"",modal:false,email:"",msg:""};
+function e(s){return s.replace(/&/g,"&amp;")}
+function go(n){S.step=n;S.modal=false;S.msg="";R();window.scrollTo(0,0)}
+function pick(k,v){S[k]=v;R()}
+function licLine(i){var x=(SRC[S.goal]&&SRC[S.goal][i])||(SRC["default"]||[])[i];if(!x)return"";
+ var l=x.url?'<a href="'+e(x.url)+'" target="_blank" rel="noopener" style="color:inherit">'+e(x.licence)+'</a>':e(x.licence);
+ return '<p class="mu" style="font-size:.8rem;margin:6px 0 0">Source: '+e(x.source)+' · Licence: '+l+(x.checked?' · checked '+e(x.checked):'')+'</p>'}
+function useFree(){S.step=3;S.modal=false;S.msg="You are on the Free plan: career discovery, your learning path, your first project and one opportunity match.";R();window.scrollTo(0,0)}
+async function subscribe(){
+ if(!S.email||S.email.indexOf("@")<0){S.msg="Enter a valid email first.";R();return}
+ S.msg="Opening Interswitch…";R();
+ try{var r=await fetch("/api/start-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({plan:"pro_monthly",email:S.email})});
+ var d=await r.json();if(!r.ok){S.msg=d.error||"Could not start payment.";R();return}
+ var f=document.createElement("form");f.method="post";f.action=d.action;
+ for(var k in d.fields){var i=document.createElement("input");i.type="hidden";i.name=k;i.value=d.fields[k];f.appendChild(i)}
+ document.body.appendChild(f);f.submit()}catch(x){S.msg="Could not start payment. Is the server running?";R()}
+}
+function head(){
+ var h='<div class="top"><span style="display:flex;align-items:center;gap:10px"><img src="/static/logo.png" alt="" width="40" height="40" style="border-radius:10px"><h1>FORGEN<span>IX</span></h1></span><span class="tag v">Prototype</span></div><p class="mu">Bridging People to Tech. Learn, work and teach with verified skills.</p><div class="lanes"><b>Learn</b><b>Work</b><b>Teach</b></div><div class="steps">';
+ for(var i=1;i<=4;i++)h+='<i class="'+(i<=S.step?'on':'')+'"></i>';
+ return h+'</div>'+(S.msg?'<div class="card ok" role="status">'+e(S.msg)+'</div>':'');
+}
+function s1(){
+ var h='<h2>Where do you want to go?</h2><p class="mu">Pick the career you are curious about. “Not sure yet” is a fine answer.</p><div class="chips">';
+ G.forEach(function(g){h+='<button class="chip'+(S.goal===g?' on':'')+'" onclick="pick(\'goal\',this.dataset.g)" data-g="'+e(g)+'">'+e(g)+'</button>'});
+ h+='</div><h2>How much time can you give each week?</h2><div class="chips">';
+ H.forEach(function(x){h+='<button class="chip'+(S.hrs===x[1]?' on':'')+'" onclick="pick(\'hrs\','+x[1]+')">'+x[0]+'</button>'});
+ return h+'</div><div class="row"><button class="b" '+(S.goal?'':'disabled')+' onclick="go(2)">Build my path</button></div>';
+}
+function s2(){
+ var g=S.goal,u=g==="Not sure yet",wk=Math.ceil(6/S.hrs);
+ var M=[[u?"Career discovery: find your fit":"Foundations in "+g,0],["Build a small project",0],["Verify: submit for review",1],["Teach: help a peer learn it",1]];
+ var h='<h2>Your learning path</h2><p class="mu">Short modules, about '+wk+' week'+(wk>1?'s':'')+' each at your pace. Every path ends in verified proof.</p>';
+ M.forEach(function(m,i){h+='<div class="card'+(m[1]&&!S.pro?' lock':'')+'"><div class="top"><span><span class="n">'+(i+1)+'</span><b>'+e(m[0])+'</b></span><span class="tag'+(m[1]?' v':'')+'">'+(m[1]&&!S.pro?'Pro':S.pro&&m[1]?'Unlocked':'Free')+'</span></div>'+licLine(i)+'</div>'});
+ return h+'<div class="row"><button class="b o" onclick="go(1)">Back</button><button class="b" onclick="go(3)">See matched opportunities</button></div>';
+}
+function s3(){
+ var g=S.goal,u=g==="Not sure yet",t=u?"Entry-level role":g;
+ var O=[[t+" intern (remote)","Internship",0],["Freelance mini-gig: "+t,"Freelance",1],["Entry-level "+t+" role","Full-time",1]];
+ var h='<h2>Matched opportunities</h2><p class="mu">Sample listings for the demo. Live matches use your verified skills.</p>';
+ O.forEach(function(o){var l=o[2]&&!S.pro;h+='<div class="card'+(l?' lock':'')+'"><div class="top"><b>'+e(l?"Locked match":o[0])+'</b><span class="tag">'+o[1]+'</span></div><p class="mu">'+(l?'Subscribe to unlock verified matching.':'Sample listing · Remote friendly')+'</p></div>'});
+ if(S.pro)h+='<div class="card ok"><b>Forgenix Pro active ✓</b><p class="mu">Payment ref: '+S.ref+'</p></div>';
+ return h+'<div class="row"><button class="b o" onclick="go(2)">Back</button>'+(S.pro?'':'<button class="b" onclick="go(4)">Unlock with Pro</button>')+'</div>';
+}
+function s4(){
+ return '<h2>Choose a plan</h2><div class="card"><div class="top"><b>Free</b><span class="tag">₦0</span></div><p class="mu">Career discovery, learning path, first project, one opportunity match.</p><div class="row"><button class="b o" onclick="useFree()">Continue with Free</button></div></div>'+
+ '<div class="card ok"><div class="top"><b>Pro</b><span class="tag v">₦2,000 / month</span></div><p class="mu">Verified projects and badge, unlimited opportunity matches, Teach lane. Price is a placeholder.</p><input type="email" placeholder="Your email" autocomplete="email" value="'+e(S.email)+'" oninput="S.email=this.value" style="width:100%;font:inherit;padding:12px;margin-top:10px;border-radius:10px;border:2px solid var(--bd);background:var(--bg);color:var(--tx)"><div class="row"><button class="b" onclick="subscribe()">Pay with Interswitch</button></div></div><div class="row"><button class="b o" onclick="go(3)">Back</button></div>';
+}
+function modal(){
+ return '<div class="ov" onclick="if(event.target===this){S.modal=false;R()}"><div class="box" role="dialog" aria-label="Checkout"><div class="top"><b>Interswitch Web Checkout</b><span class="tag v">Sandbox</span></div><p>Forgenix Pro · ₦2,000</p><p class="mu">In the live version, the Interswitch inline checkout opens here (card, transfer, USSD). This demo simulates a successful payment.</p><div class="row"><button class="b o" onclick="S.modal=false;R()">Cancel</button><button class="b" onclick="pay()">Simulate successful payment</button></div></div></div>';
+}
+function R(){document.getElementById("app").innerHTML=head()+[0,s1,s2,s3,s4][S.step]()+(S.modal?modal():"")}
+(async function(){var q=location.search;
+ try{SRC=await (await fetch("/static/sources.json")).json()}catch(x){}
+ try{var r=await fetch("/api/status");var d=await r.json();if(d.pro){S.pro=true;S.ref=d.ref;S.step=3}}catch(x){}
+ if(q.indexOf("paid=1")>-1){S.msg="Payment confirmed. Forgenix Pro is active.";S.step=3}
+ if(q.indexOf("failed=1")>-1){S.msg="Payment could not be confirmed. If money left your account, contact support with your payment reference.";S.step=4}
+ history.replaceState(null,"",location.pathname);R();})();
+if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("/service-worker.js").catch(function(err){console.error("Service worker registration failed:",err)})})}
+</script></body></html>
