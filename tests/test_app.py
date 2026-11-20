@@ -110,9 +110,15 @@ class ForgenixAppTests(unittest.TestCase):
         self.assertEqual(checkout.status_code, 200)
         checkout_data = checkout.get_json()
         self.assertEqual(checkout_data["fields"]["cust_email"], "learner@example.com")
+        self.assertEqual(
+            checkout_data["fields"]["amount"], str(app.PRO_PRICE_NAIRA * 100)
+        )
         reference = checkout_data["fields"]["txn_ref"]
         payment_response = Mock()
-        payment_response.json.return_value = {"ResponseCode": "00", "Amount": "200000"}
+        payment_response.json.return_value = {
+            "ResponseCode": "00",
+            "Amount": str(app.PRO_PRICE_NAIRA * 100),
+        }
         with patch("app.requests.get", return_value=payment_response) as query:
             completed = self.client.get(
                 "/payment-response", query_string={"txnref": reference}
@@ -132,7 +138,16 @@ class ForgenixAppTests(unittest.TestCase):
         response = self.client.get("/api/config")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.get_json()["payment_mode"], "TEST")
+        self.assertEqual(response.get_json()["pro_price_naira"], app.PRO_PRICE_NAIRA)
         self.assertNotIn("merchant", response.get_json())
+        landing_config = self.client.get(
+            "/api/config",
+            headers={"Origin": "https://davidwithskills.github.io"},
+        )
+        self.assertEqual(
+            landing_config.headers["Access-Control-Allow-Origin"],
+            "https://davidwithskills.github.io",
+        )
 
 
 if __name__ == "__main__":

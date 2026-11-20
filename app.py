@@ -33,6 +33,12 @@ MERCHANT_CODE = os.environ.get("ISW_MERCHANT_CODE", "MX6072")
 PAY_ITEM_ID = os.environ.get("ISW_PAY_ITEM_ID", "9405967")
 MODE = os.environ.get("ISW_MODE", "TEST").upper()
 LIVE = MODE == "LIVE"
+try:
+    PRO_PRICE_NAIRA = int(os.environ.get("PRO_PRICE_NAIRA", "2000"))
+except ValueError as error:
+    raise ValueError("PRO_PRICE_NAIRA must be a positive whole number of naira.") from error
+if PRO_PRICE_NAIRA <= 0:
+    raise ValueError("PRO_PRICE_NAIRA must be a positive whole number of naira.")
 PAY_URL = (
     "https://newwebpay.interswitchng.com"
     if LIVE
@@ -43,7 +49,12 @@ QUERY_URL = (
     if LIVE
     else "https://sandbox.interswitchng.com"
 ) + "/collections/api/v1/gettransaction.json"
-PLANS = {"pro_monthly": {"name": "Forgenix Pro (1 month)", "amount": 200000}}
+PLANS = {
+    "pro_monthly": {
+        "name": "Forgenix Pro (30 days)",
+        "amount": PRO_PRICE_NAIRA * 100,
+    }
+}
 MODULE_IDS = {
     goal: {module["id"] for module in path["modules"]}
     for goal, path in LEARNING_PATHS.items()
@@ -284,7 +295,18 @@ def public_config():
         payment_mode="LIVE" if LIVE else "TEST",
         payments_available=payments_available,
         hosted=PUBLIC_URL != "http://localhost:5000",
+        pro_price_naira=PRO_PRICE_NAIRA,
     )
+
+
+@app.after_request
+def set_config_response_headers(response):
+    if request.path == "/api/config":
+        response.headers["Cache-Control"] = "no-store"
+        if request.headers.get("Origin") == "https://davidwithskills.github.io":
+            response.headers["Access-Control-Allow-Origin"] = "https://davidwithskills.github.io"
+            response.vary.add("Origin")
+    return response
 
 
 @app.get("/api/status")

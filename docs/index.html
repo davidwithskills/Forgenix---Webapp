@@ -280,7 +280,7 @@
         </section>
         <section class="plan-option pro" aria-labelledby="pro-plan-title">
           <div class="plan-heading"><h3 id="pro-plan-title">Forgenix Pro</h3><span class="tag">OPTIONAL</span></div>
-          <div class="plan-price">₦2,000 <small>/ month*</small></div>
+          <div class="plan-price"><span data-pro-price>Loading current price…</span> <small>one-time · 30 days*</small></div>
           <p class="plan-description">Optional subscription preview. Paid extras are still being prepared.</p>
           <ul class="plan-benefits">
             <li>Free starter path stays available</li>
@@ -290,11 +290,11 @@
           <a class="button" href="https://forgenix-webapp.onrender.com/?view=account">Continue to Pro <span aria-hidden="true">→</span></a>
         </section>
       </div>
-      <aside class="payment-note" aria-label="Test payment notice">
+      <aside class="payment-note" aria-label="Payment mode notice">
         <span aria-hidden="true">ⓘ</span>
-        <div><strong>Interswitch checkout is in test mode.</strong><p>No real payment is being accepted. Do not send real money; the price is a placeholder.</p></div>
+        <div><strong data-payment-mode>Checking checkout mode…</strong><p data-payment-note>Confirm the price and checkout mode in the app before continuing.</p></div>
       </aside>
-      <p class="dialog-footnote">The Pro button opens the app. You’ll need to create a free account or sign in before you can continue to the Interswitch test checkout.</p>
+      <p class="dialog-footnote">The Pro button opens the app. You’ll need to create a free account or sign in before you can continue to checkout.</p>
     </div>
   </dialog>
   <footer class="wrap footer">
@@ -309,6 +309,33 @@
     const plansDialog = document.getElementById("plans-dialog");
     const openPlansButtons = document.querySelectorAll("[data-open-plans]");
     const closePlansButton = plansDialog.querySelector("[data-close-plans]");
+    const proPrice = plansDialog.querySelector("[data-pro-price]");
+    const paymentMode = plansDialog.querySelector("[data-payment-mode]");
+    const paymentNote = plansDialog.querySelector("[data-payment-note]");
+    fetch("https://forgenix-webapp.onrender.com/api/config")
+      .then((response) => {
+        if (!response.ok) throw new Error("Checkout settings could not be loaded.");
+        return response.json();
+      })
+      .then((config) => {
+        if (!Number.isSafeInteger(config.pro_price_naira) || config.pro_price_naira < 1) {
+          throw new Error("The current Pro price is invalid.");
+        }
+        proPrice.textContent = `₦${config.pro_price_naira.toLocaleString("en-NG")}`;
+        if (config.payment_mode === "LIVE") {
+          paymentMode.textContent = "Interswitch checkout is in LIVE mode.";
+          paymentNote.textContent = "Continuing may charge real money. Review the price and terms before proceeding.";
+        } else {
+          paymentMode.textContent = "Interswitch checkout is in TEST mode.";
+          paymentNote.textContent = "No real payment is being accepted. Do not send real money.";
+        }
+      })
+      .catch((error) => {
+        console.warn("Could not load current checkout settings:", error);
+        proPrice.textContent = "See current price in app";
+        paymentMode.textContent = "Checkout mode unavailable.";
+        paymentNote.textContent = "Open the app to check the current price and whether checkout is available.";
+      });
     openPlansButtons.forEach((button) => button.addEventListener("click", () => {
       if (typeof plansDialog.showModal === "function") plansDialog.showModal();
       else window.location.href = "https://forgenix-webapp.onrender.com/?view=account";

@@ -43,14 +43,15 @@ The static introduction lives in `docs/index.html`; it links visitors to the ful
 
 ## Payments
 
-Interswitch is configured in `TEST` mode by default. The credentials in the code are documented sample values and may not be valid merchant credentials. Configure these environment variables with values from your Interswitch account:
+Interswitch is configured in `TEST` mode by default. Configure these environment variables in the hosting dashboard:
 
 - `ISW_MERCHANT_CODE`
 - `ISW_PAY_ITEM_ID`
 - `ISW_MODE` (`TEST` or `LIVE`)
 - `PUBLIC_URL` (required for the payment return URL)
+- `PRO_PRICE_NAIRA` (positive whole number of naira; defaults to `2000`)
 
-Live mode refuses to start checkout when the sample or missing merchant credentials are detected. The ₦2,000 monthly price is a placeholder. Pro is optional, does not auto-renew, and must not be marketed as purchasable until the merchant account, price, callback, and persistence have been confirmed. Payment status is checked server-side with Interswitch; do not remove that check.
+To change the Pro price, update `PRO_PRICE_NAIRA` in the hosting dashboard and save/redeploy. The app charges that amount in kobo, and both the app and landing-page dialog read the configured naira price from the server. Do not edit the checkout amount in the browser; the server is authoritative. The current plan is a one-time payment for 30 days and does not auto-renew. Confirm the price, merchant account, callback, and durable data storage before accepting live payments. Payment status is checked server-side with Interswitch; do not remove that check.
 
 ## Current limitations before production use
 

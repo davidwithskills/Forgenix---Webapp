@@ -51,12 +51,13 @@ const GOALS=["Product Design","Product Management","AI & Machine Learning","Data
 const HOURS=[["1–2 hours",2],["3–5 hours",4],["6+ hours",7]];
 const STORAGE_KEY="forgenix-learner-v2";
 const EMPTY={goal:"",hours:4,completed:{}};
-const S={view:"home",lesson:"",paths:{},goal:"",hours:4,completed:{},user:null,proUntil:0,paymentMode:"TEST",paymentsAvailable:true,hosted:false,authMode:"register",busy:false};
+const S={view:"home",lesson:"",paths:{},goal:"",hours:4,completed:{},user:null,proUntil:0,paymentMode:"TEST",proPriceNaira:2000,paymentsAvailable:true,hosted:false,authMode:"register",busy:false};
 const root=document.getElementById("app");
 const notice=document.getElementById("notice");
 let noticeTimer;
 
 function esc(value){return String(value??"").replace(/[&<>"']/g,function(char){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]})}
+function formatNaira(value){return "₦"+Number(value).toLocaleString("en-NG")}
 function completedFor(goal=S.goal){return S.completed[goal]||[]}
 function percentFor(goal){const path=S.paths[goal];if(!path)return 0;return Math.round((completedFor(goal).length/path.modules.length)*100)}
 function announce(message,type="info",sticky=false){notice.textContent=message;notice.className="notice "+type;notice.hidden=false;clearTimeout(noticeTimer);if(!sticky)noticeTimer=setTimeout(()=>{notice.hidden=true},4200)}
@@ -159,7 +160,7 @@ function accountView(){
     html+='<section class="card"><div class="chips"><button class="chip'+(S.authMode==="register"?" selected":"")+'" data-action="auth-mode" data-value="register">Create free account</button><button class="chip'+(S.authMode==="login"?" selected":"")+'" data-action="auth-mode" data-value="login">Sign in</button></div><p class="muted small">'+(S.authMode==="register"?"Create an account to sync learning progress across devices. The starter path stays free.":"Sign in to load your saved path and completed modules.")+'</p><form id="auth-form"><div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" maxlength="254" required></div><div class="field"><label for="password">Password</label><input id="password" name="password" type="password" autocomplete="'+(S.authMode==="register"?"new-password":"current-password")+'" minlength="'+(S.authMode==="register"?"10":"1")+'" required><span class="muted small">'+(S.authMode==="register"?"Use at least 10 characters.":"")+'</span></div><button class="btn full" type="submit" '+(S.busy?"disabled":"")+'>'+(S.busy?"Please wait…":S.authMode==="register"?"Create free account":"Sign in")+'</button></form></section>';
   }
   html+='<section class="card"><div class="between"><div><h3>Free starter path</h3><p class="muted small">Four practical modules, self-paced</p></div><span class="tag good">₦0</span></div><p class="muted">Career discovery, original learning activities, project briefs, and progress tracking are free. You can use the app without an account; accounts only add cross-device sync.</p></section>';
-  html+='<section class="card"><div class="between"><div><h3>Forgenix Pro</h3><p class="muted small">Optional · '+(activePro?"Active until "+new Date(S.proUntil*1000).toLocaleDateString():"No active subscription")+'</p></div><span class="tag neutral">₦2,000 / month*</span></div><p class="muted">The complete starter path is free. Paid features are still being prepared, so please do not make a real purchase. Checkout is '+(S.paymentMode==="LIVE"?"live":"in test mode")+'.</p>'+(S.paymentsAvailable?(S.user&&!activePro?'<button class="btn secondary full" data-action="subscribe" '+(S.busy?"disabled":"")+'>'+(S.busy?"Opening checkout…":S.paymentMode==="TEST"?"Try sandbox checkout":"Subscribe with Interswitch")+'</button>':!S.user?'<p class="muted small">Create a free account or sign in before subscribing so the plan is linked to you.</p>':'<p class="muted small">Your subscription is active.</p>'):'<p class="muted small">Checkout is not configured for live payments. The free app remains available.</p>')+'<p class="muted small">*Placeholder price. No auto-renewal is implemented. Do not rely on demo/test checkout for real purchases.</p></section>';
+  html+='<section class="card"><div class="between"><div><h3>Forgenix Pro</h3><p class="muted small">Optional · '+(activePro?"Active until "+new Date(S.proUntil*1000).toLocaleDateString():"No active plan")+'</p></div><span class="tag neutral">'+formatNaira(S.proPriceNaira)+' / 30 days*</span></div><p class="muted">The complete starter path is free. Paid features are still being prepared. Checkout is '+(S.paymentMode==="LIVE"?"live and may charge real money":"in test mode")+'.</p>'+(S.paymentsAvailable?(S.user&&!activePro?'<button class="btn secondary full" data-action="subscribe" '+(S.busy?"disabled":"")+'>'+(S.busy?"Opening checkout…":S.paymentMode==="TEST"?"Try sandbox checkout":"Continue to live checkout")+'</button>':!S.user?'<p class="muted small">Create a free account or sign in before subscribing so the plan is linked to you.</p>':'<p class="muted small">Your plan is active.</p>'):'<p class="muted small">Checkout is not configured for live payments. The free app remains available.</p>')+'<p class="muted small">*One-time payment for 30 days; no auto-renewal. Price is configured by the site administrator.</p></section>';
   return html;
 }
 function emptyError(){return '<section class="card error"><h2>Path could not be opened</h2><p class="muted">Try choosing another direction or reload the page.</p><button class="btn secondary" data-action="view" data-value="home">Back to explore</button></section>'}
@@ -244,7 +245,7 @@ async function start(){
     const pathsResponse=await fetch("/static/paths.json");
     if(!pathsResponse.ok)throw new Error("Learning paths could not be loaded. Check your connection and try again.");
     S.paths=await pathsResponse.json();
-    try{const config=await api("/api/config");S.paymentMode=config.payment_mode;S.paymentsAvailable=config.payments_available;S.hosted=config.hosted}
+    try{const config=await api("/api/config");S.paymentMode=config.payment_mode;S.proPriceNaira=config.pro_price_naira;S.paymentsAvailable=config.payments_available;S.hosted=config.hosted}
     catch(error){console.warn("Server settings are unavailable; account and payment actions require a connection:",error);S.paymentsAvailable=false;announce("Offline mode: your saved learning path is available on this device. Accounts and checkout need a connection.","info",true)}
     applyState(readLocal());
     try{
