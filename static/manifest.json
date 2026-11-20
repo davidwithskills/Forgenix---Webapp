@@ -1,7 +1,7 @@
 {
   "name": "Forgenix",
   "short_name": "Forgenix",
-  "description": "Bridging people to tech. Learn, work and teach with verified skills.",
+  "description": "Explore a tech career, build a small project, and learn as you go.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

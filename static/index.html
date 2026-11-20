@@ -1,102 +1,268 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8">
+<html lang="en">
+<head>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Forgenix</title>
 <meta name="theme-color" content="#1f6fe5">
+<meta name="description" content="Explore a tech career, build a small project, and keep track of what you learn.">
+<title>Forgenix · Learn by building</title>
 <link rel="icon" href="/static/logo.png">
 <link rel="apple-touch-icon" href="/static/icon-192.png">
 <link rel="manifest" href="/static/manifest.json">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f4f5f7;--card:#fff;--tx:#0b1220;--mu:#53607a;--ac:#1f6fe5;--ac2:#e3eeff;--vi:#14213d;--bd:#d6deeb;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b0d12;--card:#141922;--tx:#eef2f8;--mu:#9aa6b8;--ac:#3d9bff;--ac2:#12263f;--vi:#9ec5ff;--bd:#242c3a;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#0b0d12;--card:#141922;--tx:#eef2f8;--mu:#9aa6b8;--ac:#3d9bff;--ac2:#12263f;--vi:#9ec5ff;--bd:#242c3a;color-scheme:dark}
-*{box-sizing:border-box}html,body{margin:0}
-body{background:var(--bg);color:var(--tx);font-family:"Bricolage Grotesque",system-ui,sans-serif;line-height:1.5;min-height:100vh}
-main{max-width:480px;margin:0 auto;padding:16px}
-h1{font-size:1.5rem;font-weight:800;margin:0;letter-spacing:.08em}h1 span{color:var(--ac)}
-h2{font-size:1.3rem;margin:14px 0 6px}p{margin:.3rem 0}.mu{color:var(--mu);font-size:.9rem}
-.top{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.steps{display:flex;gap:6px;margin:12px 0}.steps i{flex:1;height:5px;border-radius:3px;background:var(--bd)}.steps i.on{background:var(--ac)}
-.lanes{display:flex;gap:6px;margin:8px 0}.lanes b{flex:1;text-align:center;font-size:.8rem;padding:4px;border-radius:8px;background:var(--ac2);color:var(--ac)}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
-.chip{font:inherit;border:2px solid var(--bd);background:var(--card);color:var(--tx);border-radius:20px;padding:8px 14px;cursor:pointer;min-height:44px}
-.chip.on{border-color:var(--ac);background:var(--ac2);font-weight:600}
-.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin:10px 0}
-.card.lock{opacity:.55}
-.tag{font-size:.75rem;border-radius:8px;padding:2px 8px;background:var(--ac2);color:var(--ac);font-weight:600;white-space:nowrap}
-.tag.v{background:var(--bd);color:var(--vi)}
-.n{display:inline-block;width:26px;height:26px;border-radius:50%;background:var(--vi);color:var(--bg);text-align:center;font-weight:700;margin-right:8px}
-button.b{font:inherit;font-weight:600;border-radius:10px;border:2px solid var(--ac);background:var(--ac);color:#fff;padding:10px 16px;cursor:pointer;min-height:44px}
-:root[data-theme="dark"] button.b{color:#0b0d12}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) button.b{color:#0b0d12}}
-button.b.o{background:transparent;color:var(--ac)}button.b[disabled]{opacity:.5}
-.row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
-button:focus-visible{outline:3px solid var(--tx);outline-offset:2px}
-.ov{position:fixed;inset:0;background:rgba(10,6,20,.6);display:flex;align-items:flex-end;justify-content:center;padding:0}
-.box{background:var(--card);width:100%;max-width:480px;border-radius:18px 18px 0 0;padding:18px 18px calc(18px + env(safe-area-inset-bottom,0px))}
-.ok{border-color:var(--vi)}
-</style></head><body><main id="app"></main>
+:root{--bg:#f4f5f7;--card:#fff;--tx:#0b1220;--mu:#53607a;--ac:#1f6fe5;--ac2:#e3eeff;--vi:#14213d;--bd:#d6deeb;--ok:#16794b;color-scheme:light;box-sizing:border-box}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0b0d12;--card:#141922;--tx:#eef2f8;--mu:#9aa6b8;--ac:#3d9bff;--ac2:#12263f;--vi:#9ec5ff;--bd:#242c3a;--ok:#56d69a;color-scheme:dark}}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;padding:0}body{background:var(--bg);color:var(--tx);font-family:"Bricolage Grotesque",system-ui,sans-serif;line-height:1.55;padding:env(safe-area-inset-top) 0 0}
+button,input{font:inherit}button{color:inherit}a{color:var(--ac)}main{max-width:620px;margin:0 auto;padding:16px 16px calc(96px + env(safe-area-inset-bottom))}
+h1{font-size:1.18rem;letter-spacing:.07em;margin:0;font-weight:800}h1 span{color:var(--ac)}h2{font-size:1.48rem;line-height:1.22;margin:12px 0 6px}h3{font-size:1.05rem;margin:0 0 4px}p{margin:6px 0}.muted{color:var(--mu);font-size:.92rem}.small{font-size:.82rem}
+.top,.row,.between{display:flex;align-items:center;gap:10px}.top,.between{justify-content:space-between}.row{flex-wrap:wrap;margin-top:14px}.brand{display:flex;align-items:center;gap:9px}.brand img{width:36px;height:36px;border-radius:10px}
+.eyebrow{text-transform:uppercase;letter-spacing:.09em;font-size:.73rem;font-weight:800;color:var(--ac);margin:18px 0 4px}.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:16px;margin:12px 0}.card.tint{background:var(--ac2);border-color:transparent}.card.done{border-color:var(--ok)}.card.error{border-color:#c94c4c;background:color-mix(in srgb,#c94c4c 8%,var(--card))}
+.tag{display:inline-flex;align-items:center;border-radius:999px;padding:4px 10px;background:var(--ac2);color:var(--ac);font-size:.76rem;font-weight:700;white-space:nowrap}.tag.good{background:color-mix(in srgb,var(--ok) 13%,var(--card));color:var(--ok)}.tag.neutral{background:var(--bd);color:var(--vi)}
+.btn{border:2px solid var(--ac);border-radius:11px;background:var(--ac);color:#fff;font-weight:700;min-height:46px;padding:9px 16px;cursor:pointer}.btn.secondary{background:transparent;color:var(--ac)}.btn.quiet{border-color:transparent;background:transparent;color:var(--mu)}.btn:disabled{opacity:.55;cursor:wait}.btn.full{width:100%}button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--tx);outline-offset:3px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}.chip{border:1.5px solid var(--bd);border-radius:999px;background:var(--card);padding:9px 13px;min-height:44px;cursor:pointer}.chip.selected{border-color:var(--ac);background:var(--ac2);font-weight:700}
+.field{display:grid;gap:5px;margin:12px 0}.field label{font-weight:700;font-size:.9rem}.field input{width:100%;min-height:48px;border:1px solid var(--bd);border-radius:11px;padding:10px 12px;background:var(--bg);color:var(--tx)}
+.progress-track{height:9px;border-radius:99px;background:var(--bd);overflow:hidden;margin:12px 0 4px}.progress-track span{display:block;height:100%;background:var(--ac);border-radius:inherit}.module-head{display:flex;gap:12px;align-items:flex-start}.number{flex:none;width:32px;height:32px;display:grid;place-items:center;border-radius:50%;background:var(--vi);color:var(--bg);font-weight:800}.module-link{display:block;width:100%;border:0;background:transparent;text-align:left;padding:0;cursor:pointer}.checklist{padding-left:22px}.checklist li{padding:3px 0}.checklist li::marker{color:var(--ac)}
+.bottom-nav{position:fixed;z-index:5;bottom:0;left:0;right:0;background:color-mix(in srgb,var(--card) 94%,transparent);backdrop-filter:blur(14px);border-top:1px solid var(--bd);padding:8px 8px calc(8px + env(safe-area-inset-bottom));display:flex;justify-content:center}.nav-inner{width:min(620px,100%);display:grid;grid-template-columns:repeat(4,1fr);gap:4px}.nav-item{border:0;background:transparent;border-radius:12px;min-height:52px;padding:5px 2px;color:var(--mu);font-size:.76rem;cursor:pointer}.nav-item span{display:block;font-size:1.15rem;line-height:1.3}.nav-item.active{color:var(--ac);background:var(--ac2);font-weight:800}
+.notice{border-radius:12px;border:1px solid var(--bd);padding:11px 13px;margin:12px 0}.notice[hidden]{display:none}.notice.info{background:var(--ac2)}.notice.error{border-color:#c94c4c;color:#a93232}.notice.success{border-color:var(--ok);color:var(--ok)}
+.list{display:grid;gap:8px}.stat{font-size:1.65rem;font-weight:800}.muted-link{color:var(--mu)}.spacer{height:4px}
+@media(min-width:700px){main{padding-top:26px}.bottom-nav{bottom:18px;border:1px solid var(--bd);border-radius:18px;left:50%;right:auto;width:min(620px,calc(100% - 32px));transform:translateX(-50%);box-shadow:0 10px 38px #00000014}.card{padding:19px}}
+</style>
+</head>
+<body>
+<main>
+  <header class="top">
+    <div class="brand"><img src="/static/logo.png" alt=""><h1>FORGEN<span>IX</span></h1></div>
+    <span class="tag neutral">Free to start</span>
+  </header>
+  <p class="muted">Explore a path. Make something small. Learn as you go.</p>
+  <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+  <div id="app" aria-live="polite"><section class="card"><p>Loading your learning space…</p></section></div>
+</main>
+<nav class="bottom-nav" aria-label="Main navigation"><div class="nav-inner">
+  <button class="nav-item" data-view="home"><span aria-hidden="true">⌂</span>Explore</button>
+  <button class="nav-item" data-view="path"><span aria-hidden="true">▤</span>My path</button>
+  <button class="nav-item" data-view="progress"><span aria-hidden="true">✓</span>Progress</button>
+  <button class="nav-item" data-view="account"><span aria-hidden="true">◉</span>Account</button>
+</div></nav>
 <script>
-var G=["Product Design","Product Management","AI & Machine Learning","Data & Analytics","Cybersecurity","Digital Marketing","Software Engineering","Not sure yet"];
-var H=[["1–2 hrs",2],["3–5 hrs",4],["6+ hrs",7]];
-var SRC={};var S={step:1,goal:"",hrs:4,pro:false,ref:"",modal:false,email:"",msg:""};
-function e(s){return s.replace(/&/g,"&amp;")}
-function go(n){S.step=n;S.modal=false;S.msg="";R();window.scrollTo(0,0)}
-function pick(k,v){S[k]=v;R()}
-function licLine(i){var x=(SRC[S.goal]&&SRC[S.goal][i])||(SRC["default"]||[])[i];if(!x)return"";
- var l=x.url?'<a href="'+e(x.url)+'" target="_blank" rel="noopener" style="color:inherit">'+e(x.licence)+'</a>':e(x.licence);
- return '<p class="mu" style="font-size:.8rem;margin:6px 0 0">Source: '+e(x.source)+' · Licence: '+l+(x.checked?' · checked '+e(x.checked):'')+'</p>'}
-function useFree(){S.step=3;S.modal=false;S.msg="You are on the Free plan: career discovery, your learning path, your first project and one opportunity match.";R();window.scrollTo(0,0)}
+"use strict";
+const GOALS=["Product Design","Product Management","AI & Machine Learning","Data & Analytics","Cybersecurity","Digital Marketing","Software Engineering","Not sure yet"];
+const HOURS=[["1–2 hours",2],["3–5 hours",4],["6+ hours",7]];
+const STORAGE_KEY="forgenix-learner-v2";
+const EMPTY={goal:"",hours:4,completed:{}};
+const S={view:"home",lesson:"",paths:{},goal:"",hours:4,completed:{},user:null,proUntil:0,paymentMode:"TEST",paymentsAvailable:true,authMode:"register",busy:false};
+const root=document.getElementById("app");
+const notice=document.getElementById("notice");
+let noticeTimer;
+
+function esc(value){return String(value??"").replace(/[&<>"']/g,function(char){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]})}
+function completedFor(goal=S.goal){return S.completed[goal]||[]}
+function percentFor(goal){const path=S.paths[goal];if(!path)return 0;return Math.round((completedFor(goal).length/path.modules.length)*100)}
+function announce(message,type="info",sticky=false){notice.textContent=message;notice.className="notice "+type;notice.hidden=false;clearTimeout(noticeTimer);if(!sticky)noticeTimer=setTimeout(()=>{notice.hidden=true},4200)}
+function readLocal(){
+  try{
+    const raw=localStorage.getItem(STORAGE_KEY);
+    if(!raw)return {...EMPTY};
+    const data=JSON.parse(raw);
+    if(!data||typeof data!=="object")throw new Error("Saved progress has an unexpected format.");
+    const goal=GOALS.includes(data.goal)?data.goal:"";
+    const hours=HOURS.some(item=>item[1]===data.hours)?data.hours:4;
+    const completed={};
+    if(data.completed&&typeof data.completed==="object"&&!Array.isArray(data.completed)){
+      for(const pathGoal of GOALS){
+        const valid=new Set((S.paths[pathGoal]?.modules||[]).map(module=>module.id));
+        if(Array.isArray(data.completed[pathGoal]))completed[pathGoal]=[...new Set(data.completed[pathGoal].filter(id=>valid.has(id)))];
+      }
+    }
+    return {goal,hours,completed};
+  }catch(error){announce("Your device could not read saved progress. You can continue, but changes may not be saved here.","error",true);console.error("Could not read local learning progress:",error);return {...EMPTY}}
+}
+function stateSnapshot(){return {goal:S.goal,hours:S.hours,completed:S.completed}}
+function applyState(state){
+  if(!state||typeof state!=="object")return;
+  S.goal=GOALS.includes(state.goal)?state.goal:"";
+  S.hours=HOURS.some(item=>item[1]===state.hours)?state.hours:4;
+  S.completed={};
+  if(state.completed&&typeof state.completed==="object"){
+    for(const goal of GOALS){
+      const valid=new Set((S.paths[goal]?.modules||[]).map(module=>module.id));
+      const done=state.completed[goal];
+      if(Array.isArray(done))S.completed[goal]=[...new Set(done.filter(id=>valid.has(id)))];
+    }
+  }
+}
+function localSave(){
+  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(stateSnapshot()))}
+  catch(error){console.error("Could not save local learning progress:",error);announce("Progress changed, but this browser could not save it. Check device storage settings.","error",true)}
+}
+async function syncState(){
+  if(!S.user)return;
+  try{
+    const response=await fetch("/api/state",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({state:stateSnapshot()})});
+    const data=await response.json();
+    if(!response.ok)throw new Error(data.error||"Could not sync your progress.");
+  }catch(error){console.error("Could not sync account progress:",error);announce(error.message+" Your device copy is still available.","error",true)}
+}
+function updateProgress(){localSave();render();syncState()}
+async function api(url,options={}){
+  const response=await fetch(url,{...options,headers:{"Content-Type":"application/json",...(options.headers||{})}});
+  const data=await response.json().catch(()=>({error:"The server returned an unreadable response. Please try again."}));
+  if(!response.ok)throw new Error(data.error||"The request could not be completed.");
+  return data;
+}
+function nav(){document.querySelectorAll(".nav-item").forEach(button=>button.classList.toggle("active",button.dataset.view===S.view))}
+function progressCard(goal){
+  const path=S.paths[goal];if(!path)return "";
+  const done=completedFor(goal).length,total=path.modules.length,pct=percentFor(goal);
+  return '<section class="card"><div class="between"><div><div class="eyebrow" style="margin-top:0">Your learning path</div><h3>'+esc(goal)+'</h3></div><span class="tag">'+pct+'%</span></div><div class="progress-track" role="progressbar" aria-label="Path progress" aria-valuenow="'+pct+'" aria-valuemin="0" aria-valuemax="100"><span style="width:'+pct+'%"></span></div><p class="muted small">'+done+' of '+total+' modules complete · about '+Math.max(1,Math.ceil(6/S.hours))+' weeks at your pace</p><button class="btn secondary full" data-action="view" data-value="path">Continue learning</button></section>';
+}
+function homeView(){
+  let html='<div class="eyebrow">A practical start in tech</div><h2>Make room for your next skill.</h2><p class="muted">Pick a direction that interests you. Your starter path is free, self-paced, and saved on this device.</p>';
+  if(S.goal)html+=progressCard(S.goal);
+  html+='<section class="card"><h3>'+(S.goal?"Explore another direction":"What would you like to explore?")+'</h3><p class="muted small">You can change your mind later; learning paths are not a commitment.</p><div class="chips">'+GOALS.map(goal=>'<button class="chip'+(S.goal===goal?' selected':'')+'" data-action="goal" data-value="'+esc(goal)+'" aria-pressed="'+(S.goal===goal)+'">'+esc(goal)+'</button>').join("")+'</div><h3>Time you can give each week</h3><div class="chips">'+HOURS.map(item=>'<button class="chip'+(S.hours===item[1]?' selected':'')+'" data-action="hours" data-value="'+item[1]+'" aria-pressed="'+(S.hours===item[1])+'">'+item[0]+'</button>').join("")+'</div><button class="btn full" data-action="view" data-value="path" '+(!S.goal?'disabled':'')+'>'+(S.goal?"Open my free learning path":"Choose a direction to continue")+'</button></section>';
+  html+='<section class="card tint"><h3>No experience needed</h3><p class="muted">Every step ends with something you can point to: a sketch, a plan, a small build, or a reflection. Start with what you have.</p></section>';
+  return html;
+}
+function moduleCard(module,index){
+  const done=completedFor().includes(module.id);
+  return '<section class="card'+(done?' done':'')+'"><div class="module-head"><span class="number">'+(done?'✓':index+1)+'</span><div style="flex:1"><button class="module-link" data-action="lesson" data-value="'+esc(module.id)+'"><h3>'+esc(module.title)+'</h3></button><p class="muted small">'+esc(module.time)+' · '+(done?'Complete':'Free module')+'</p></div><span class="tag'+(done?' good':'')+'">'+(done?'Done':'Free')+'</span></div><p class="muted">'+esc(module.overview)+'</p><button class="btn secondary full" data-action="lesson" data-value="'+esc(module.id)+'">Open module</button></section>';
+}
+function pathView(){
+  if(!S.goal)return '<div class="eyebrow">Your path</div><h2>Choose what you want to explore.</h2><p class="muted">Pick a career direction first. It is free to change later.</p><button class="btn" data-action="view" data-value="home">Choose a direction</button>';
+  const path=S.paths[S.goal];if(!path)return emptyError();
+  const pct=percentFor(S.goal);
+  return '<div class="eyebrow">Your free learning path</div><h2>'+esc(S.goal)+'</h2><p class="muted">'+esc(path.intro)+'</p><section class="card tint"><div class="between"><b>'+pct+'% complete</b><span class="tag">'+completedFor().length+' / '+path.modules.length+' steps</span></div><div class="progress-track"><span style="width:'+pct+'%"></span></div><p class="small muted">Plan for about '+Math.max(1,Math.ceil(6/S.hours))+' weeks at '+(HOURS.find(item=>item[1]===S.hours)?.[0]||"your chosen pace")+'.</p></section><div class="eyebrow">Learn · practice · reflect</div>'+path.modules.map(moduleCard).join("")+'<p class="muted small">These are original Forgenix learning activities. Use only assets and data you are allowed to share.</p>';
+}
+function lessonView(){
+  const path=S.paths[S.goal];const module=path?.modules.find(item=>item.id===S.lesson);
+  if(!module)return pathView();
+  const done=completedFor().includes(module.id);
+  return '<button class="btn quiet" data-action="view" data-value="path">← Back to path</button><div class="eyebrow">'+esc(S.goal)+' · '+esc(module.time)+'</div><h2>'+esc(module.title)+'</h2><p class="muted">'+esc(module.overview)+'</p><section class="card"><h3>Your activity</h3><p>'+esc(module.activity)+'</p></section><section class="card"><h3>What you will make</h3><p>'+esc(module.deliverable)+'</p></section><section class="card"><h3>Check your work</h3><ul class="checklist">'+module.checklist.map(item=>'<li>'+esc(item)+'</li>').join("")+'</ul></section><section class="card tint"><h3>Keep it manageable</h3><p class="muted">You do not need a paid tool, a certificate, or a perfect first attempt. Write down what you tried and what you learned.</p></section><button class="btn full" data-action="complete" data-value="'+esc(module.id)+'">'+(done?"Mark as not finished yet":"Mark module complete")+'</button>';
+}
+function progressView(){
+  const all=Object.keys(S.completed).reduce((sum,goal)=>sum+(S.completed[goal]||[]).length,0);
+  let html='<div class="eyebrow">Small steps count</div><h2>Your progress</h2><p class="muted">Your work saves on this device. A free account can sync the same learning record across devices.</p><section class="card"><div class="between"><div><div class="stat">'+all+'</div><div class="muted small">modules completed</div></div><span class="tag">'+(S.user?"Synced account":"On this device")+'</span></div></section>';
+  if(!S.goal)html+='<section class="card"><h3>Your first step is waiting</h3><p class="muted">Choose a direction to see a learning path that fits.</p><button class="btn" data-action="view" data-value="home">Explore paths</button></section>';
+  else html+=progressCard(S.goal);
+  if(S.goal&&percentFor(S.goal)===100)html+='<section class="card tint"><h3>You finished your starter path 🎉</h3><p class="muted">Save your work in a portfolio, ask someone for feedback, and choose one next skill to practice.</p></section>';
+  html+='<section class="card"><h3>Keep your progress</h3><p class="muted">'+(S.user?"Your progress is linked to "+esc(S.user)+". Sign in from another device to continue.":"Create a free account to sync your progress across devices. No subscription is required.")+'</p><button class="btn secondary" data-action="view" data-value="account">'+(S.user?"Account settings":"Create a free account")+'</button></section>';
+  return html;
+}
+function accountView(){
+  const activePro=S.proUntil>Date.now()/1000;
+  let html='<div class="eyebrow">Your account</div><h2>'+(S.user?"Welcome back":"Keep your learning in sync")+'</h2>';
+  if(S.user){
+    html+='<section class="card"><div class="between"><div><h3>'+esc(S.user)+'</h3><p class="muted small">Free Forgenix account</p></div><span class="tag good">Signed in</span></div><p class="muted">Your learning path and completed modules sync with this account.</p><button class="btn secondary" data-action="logout">Sign out</button></section>';
+  }else{
+    html+='<section class="card"><div class="chips"><button class="chip'+(S.authMode==="register"?" selected":"")+'" data-action="auth-mode" data-value="register">Create free account</button><button class="chip'+(S.authMode==="login"?" selected":"")+'" data-action="auth-mode" data-value="login">Sign in</button></div><p class="muted small">'+(S.authMode==="register"?"Create an account to sync learning progress across devices. The starter path stays free.":"Sign in to load your saved path and completed modules.")+'</p><form id="auth-form"><div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" maxlength="254" required></div><div class="field"><label for="password">Password</label><input id="password" name="password" type="password" autocomplete="'+(S.authMode==="register"?"new-password":"current-password")+'" minlength="'+(S.authMode==="register"?"10":"1")+'" required><span class="muted small">'+(S.authMode==="register"?"Use at least 10 characters.":"")+'</span></div><button class="btn full" type="submit" '+(S.busy?"disabled":"")+'>'+(S.busy?"Please wait…":S.authMode==="register"?"Create free account":"Sign in")+'</button></form></section>';
+  }
+  html+='<section class="card"><div class="between"><div><h3>Free starter path</h3><p class="muted small">Four practical modules, self-paced</p></div><span class="tag good">₦0</span></div><p class="muted">Career discovery, original learning activities, project briefs, and progress tracking are free. You can use the app without an account; accounts only add cross-device sync.</p></section>';
+  html+='<section class="card"><div class="between"><div><h3>Forgenix Pro</h3><p class="muted small">Optional · '+(activePro?"Active until "+new Date(S.proUntil*1000).toLocaleDateString():"No active subscription")+'</p></div><span class="tag neutral">₦2,000 / month*</span></div><p class="muted">The complete starter path is free. Paid features are still being prepared, so please do not make a real purchase. Checkout is '+(S.paymentMode==="LIVE"?"live":"in test mode")+'.</p>'+(S.paymentsAvailable?(S.user&&!activePro?'<button class="btn secondary full" data-action="subscribe" '+(S.busy?"disabled":"")+'>'+(S.busy?"Opening checkout…":S.paymentMode==="TEST"?"Try sandbox checkout":"Subscribe with Interswitch")+'</button>':!S.user?'<p class="muted small">Create a free account or sign in before subscribing so the plan is linked to you.</p>':'<p class="muted small">Your subscription is active.</p>'):'<p class="muted small">Checkout is not configured for live payments. The free app remains available.</p>')+'<p class="muted small">*Placeholder price. No auto-renewal is implemented. Do not rely on demo/test checkout for real purchases.</p></section>';
+  return html;
+}
+function emptyError(){return '<section class="card error"><h2>Path could not be opened</h2><p class="muted">Try choosing another direction or reload the page.</p><button class="btn secondary" data-action="view" data-value="home">Back to explore</button></section>'}
+function render(){
+  nav();
+  let html="";
+  if(S.view==="home")html=homeView();
+  else if(S.view==="path")html=S.lesson?lessonView():pathView();
+  else if(S.view==="progress")html=progressView();
+  else if(S.view==="account")html=accountView();
+  root.innerHTML=html;
+}
+function setView(view){
+  S.view=view;S.lesson="";
+  if(view==="path"&&!S.goal){S.view="home";announce("Choose a learning direction first.","info")}
+  render();window.scrollTo({top:0,behavior:"smooth"});
+}
+function toggleComplete(moduleId){
+  const done=new Set(completedFor());
+  if(done.has(moduleId))done.delete(moduleId);else done.add(moduleId);
+  S.completed={...S.completed,[S.goal]:[...done]};
+  updateProgress();
+  announce(done.has(moduleId)?"Nice work — your progress is saved.":"Module marked as in progress.", "success");
+}
+function mergeLocalAndAccount(local,remote){
+  if(!remote.goal&&local.goal){
+    return {...remote,goal:local.goal,hours:local.hours,completed:{...remote.completed,...local.completed}};
+  }
+  if(remote.goal&&remote.goal===local.goal){
+    const merged=new Set([...(remote.completed[remote.goal]||[]),...(local.completed[remote.goal]||[])]);
+    return {...remote,completed:{...local.completed,...remote.completed,[remote.goal]:[...merged]}};
+  }
+  return remote;
+}
+async function submitAuth(form){
+  const values=new FormData(form);const email=String(values.get("email")||"").trim().toLowerCase();const password=String(values.get("password")||"");
+  S.busy=true;render();
+  try{
+    const local=stateSnapshot();
+    const endpoint=S.authMode==="register"?"/api/auth/register":"/api/auth/login";
+    const body={email,password};if(S.authMode==="register")body.state=local;
+    const data=await api(endpoint,{method:"POST",body:JSON.stringify(body)});
+    S.user=data.email;S.proUntil=data.pro_until||0;
+    const accountState=S.authMode==="login"?mergeLocalAndAccount(local,data.state):data.state;
+    applyState(accountState);
+    if(S.authMode==="login"&&JSON.stringify(accountState)!==JSON.stringify(data.state))await api("/api/state",{method:"POST",body:JSON.stringify({state:stateSnapshot()})});
+    localSave();S.view=S.goal?"path":"home";S.busy=false;render();
+    announce(S.authMode==="register"?"Account created. Your learning progress is ready to sync.":"Signed in. Your saved learning path is ready.","success");
+  }catch(error){S.busy=false;render();announce(error.message,"error",true)}
+}
 async function subscribe(){
- if(!S.email||S.email.indexOf("@")<0){S.msg="Enter a valid email first.";R();return}
- S.msg="Opening Interswitch…";R();
- try{var r=await fetch("/api/start-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({plan:"pro_monthly",email:S.email})});
- var d=await r.json();if(!r.ok){S.msg=d.error||"Could not start payment.";R();return}
- var f=document.createElement("form");f.method="post";f.action=d.action;
- for(var k in d.fields){var i=document.createElement("input");i.type="hidden";i.name=k;i.value=d.fields[k];f.appendChild(i)}
- document.body.appendChild(f);f.submit()}catch(x){S.msg="Could not start payment. Is the server running?";R()}
+  if(!S.user){S.view="account";render();announce("Create a free account or sign in to link a subscription.","info");return}
+  S.busy=true;render();
+  try{
+    const data=await api("/api/start-payment",{method:"POST",body:JSON.stringify({plan:"pro_monthly"})});
+    const form=document.createElement("form");form.method="post";form.action=data.action;
+    Object.entries(data.fields).forEach(([name,value])=>{const input=document.createElement("input");input.type="hidden";input.name=name;input.value=value;form.appendChild(input)});
+    document.body.appendChild(form);form.submit();
+  }catch(error){S.busy=false;render();announce(error.message,"error",true)}
 }
-function head(){
- var h='<div class="top"><span style="display:flex;align-items:center;gap:10px"><img src="/static/logo.png" alt="" width="40" height="40" style="border-radius:10px"><h1>FORGEN<span>IX</span></h1></span><span class="tag v">Prototype</span></div><p class="mu">Bridging People to Tech. Learn, work and teach with verified skills.</p><div class="lanes"><b>Learn</b><b>Work</b><b>Teach</b></div><div class="steps">';
- for(var i=1;i<=4;i++)h+='<i class="'+(i<=S.step?'on':'')+'"></i>';
- return h+'</div>'+(S.msg?'<div class="card ok" role="status">'+e(S.msg)+'</div>':'');
+root.addEventListener("click",async event=>{
+  const button=event.target.closest("[data-action]");if(!button)return;
+  const action=button.dataset.action;const value=button.dataset.value;
+  if(action==="view")setView(value);
+  else if(action==="goal"){S.goal=value;localSave();render();syncState()}
+  else if(action==="hours"){S.hours=Number(value);localSave();render();syncState()}
+  else if(action==="lesson"){S.lesson=value;S.view="path";render();window.scrollTo({top:0,behavior:"smooth"})}
+  else if(action==="complete")toggleComplete(value);
+  else if(action==="auth-mode"){S.authMode=value;render()}
+  else if(action==="subscribe")subscribe();
+  else if(action==="logout"){
+    S.busy=true;render();
+    try{await api("/api/auth/logout",{method:"POST",body:"{}"});S.user=null;S.proUntil=0;S.view="account";S.busy=false;render();announce("Signed out. This device's saved progress is still here.","success")}
+    catch(error){S.busy=false;render();announce(error.message,"error",true)}
+  }
+});
+document.querySelector(".bottom-nav").addEventListener("click",event=>{const button=event.target.closest("[data-view]");if(button)setView(button.dataset.view)});
+root.addEventListener("submit",event=>{if(event.target.id==="auth-form"){event.preventDefault();submitAuth(event.target)}});
+
+async function start(){
+  try{
+    const pathsResponse=await fetch("/static/paths.json");
+    if(!pathsResponse.ok)throw new Error("Learning paths could not be loaded. Check your connection and try again.");
+    S.paths=await pathsResponse.json();
+    try{const config=await api("/api/config");S.paymentMode=config.payment_mode;S.paymentsAvailable=config.payments_available}
+    catch(error){console.warn("Server settings are unavailable; account and payment actions require a connection:",error);S.paymentsAvailable=false;announce("Offline mode: your saved learning path is available on this device. Accounts and checkout need a connection.","info",true)}
+    applyState(readLocal());
+    try{
+      const account=await api("/api/auth/me");
+      if(account.authenticated){
+        S.user=account.email;S.proUntil=account.pro_until||0;
+        const merged=mergeLocalAndAccount(stateSnapshot(),account.state);
+        applyState(merged);
+        if(JSON.stringify(merged)!==JSON.stringify(account.state))await api("/api/state",{method:"POST",body:JSON.stringify({state:stateSnapshot()})});
+      }
+    }catch(error){console.warn("Account status is unavailable; continuing with this device's saved progress:",error);S.user=null;S.proUntil=0;announce("You are offline. Progress will remain on this device until you can sync again.","info",true)}
+    if(new URLSearchParams(location.search).get("paid")==="1")announce("Payment confirmed. Your optional Pro subscription is active.","success",true);
+    if(new URLSearchParams(location.search).get("failed")==="1")announce("Payment could not be confirmed. If money left your account, contact support with your payment reference.","error",true);
+    history.replaceState(null,"",location.pathname);
+    render();
+  }catch(error){console.error("Could not initialize the learning space:",error);root.innerHTML='<section class="card error"><h2>We could not load your learning space</h2><p class="muted">'+esc(error.message)+'</p><button class="btn" onclick="location.reload()">Try again</button></section>'}
 }
-function s1(){
- var h='<h2>Where do you want to go?</h2><p class="mu">Pick the career you are curious about. “Not sure yet” is a fine answer.</p><div class="chips">';
- G.forEach(function(g){h+='<button class="chip'+(S.goal===g?' on':'')+'" onclick="pick(\'goal\',this.dataset.g)" data-g="'+e(g)+'">'+e(g)+'</button>'});
- h+='</div><h2>How much time can you give each week?</h2><div class="chips">';
- H.forEach(function(x){h+='<button class="chip'+(S.hrs===x[1]?' on':'')+'" onclick="pick(\'hrs\','+x[1]+')">'+x[0]+'</button>'});
- return h+'</div><div class="row"><button class="b" '+(S.goal?'':'disabled')+' onclick="go(2)">Build my path</button></div>';
-}
-function s2(){
- var g=S.goal,u=g==="Not sure yet",wk=Math.ceil(6/S.hrs);
- var M=[[u?"Career discovery: find your fit":"Foundations in "+g,0],["Build a small project",0],["Verify: submit for review",1],["Teach: help a peer learn it",1]];
- var h='<h2>Your learning path</h2><p class="mu">Short modules, about '+wk+' week'+(wk>1?'s':'')+' each at your pace. Every path ends in verified proof.</p>';
- M.forEach(function(m,i){h+='<div class="card'+(m[1]&&!S.pro?' lock':'')+'"><div class="top"><span><span class="n">'+(i+1)+'</span><b>'+e(m[0])+'</b></span><span class="tag'+(m[1]?' v':'')+'">'+(m[1]&&!S.pro?'Pro':S.pro&&m[1]?'Unlocked':'Free')+'</span></div>'+licLine(i)+'</div>'});
- return h+'<div class="row"><button class="b o" onclick="go(1)">Back</button><button class="b" onclick="go(3)">See matched opportunities</button></div>';
-}
-function s3(){
- var g=S.goal,u=g==="Not sure yet",t=u?"Entry-level role":g;
- var O=[[t+" intern (remote)","Internship",0],["Freelance mini-gig: "+t,"Freelance",1],["Entry-level "+t+" role","Full-time",1]];
- var h='<h2>Matched opportunities</h2><p class="mu">Sample listings for the demo. Live matches use your verified skills.</p>';
- O.forEach(function(o){var l=o[2]&&!S.pro;h+='<div class="card'+(l?' lock':'')+'"><div class="top"><b>'+e(l?"Locked match":o[0])+'</b><span class="tag">'+o[1]+'</span></div><p class="mu">'+(l?'Subscribe to unlock verified matching.':'Sample listing · Remote friendly')+'</p></div>'});
- if(S.pro)h+='<div class="card ok"><b>Forgenix Pro active ✓</b><p class="mu">Payment ref: '+S.ref+'</p></div>';
- return h+'<div class="row"><button class="b o" onclick="go(2)">Back</button>'+(S.pro?'':'<button class="b" onclick="go(4)">Unlock with Pro</button>')+'</div>';
-}
-function s4(){
- return '<h2>Choose a plan</h2><div class="card"><div class="top"><b>Free</b><span class="tag">₦0</span></div><p class="mu">Career discovery, learning path, first project, one opportunity match.</p><div class="row"><button class="b o" onclick="useFree()">Continue with Free</button></div></div>'+
- '<div class="card ok"><div class="top"><b>Pro</b><span class="tag v">₦2,000 / month</span></div><p class="mu">Verified projects and badge, unlimited opportunity matches, Teach lane. Price is a placeholder.</p><input type="email" placeholder="Your email" autocomplete="email" value="'+e(S.email)+'" oninput="S.email=this.value" style="width:100%;font:inherit;padding:12px;margin-top:10px;border-radius:10px;border:2px solid var(--bd);background:var(--bg);color:var(--tx)"><div class="row"><button class="b" onclick="subscribe()">Pay with Interswitch</button></div></div><div class="row"><button class="b o" onclick="go(3)">Back</button></div>';
-}
-function modal(){
- return '<div class="ov" onclick="if(event.target===this){S.modal=false;R()}"><div class="box" role="dialog" aria-label="Checkout"><div class="top"><b>Interswitch Web Checkout</b><span class="tag v">Sandbox</span></div><p>Forgenix Pro · ₦2,000</p><p class="mu">In the live version, the Interswitch inline checkout opens here (card, transfer, USSD). This demo simulates a successful payment.</p><div class="row"><button class="b o" onclick="S.modal=false;R()">Cancel</button><button class="b" onclick="pay()">Simulate successful payment</button></div></div></div>';
-}
-function R(){document.getElementById("app").innerHTML=head()+[0,s1,s2,s3,s4][S.step]()+(S.modal?modal():"")}
-(async function(){var q=location.search;
- try{SRC=await (await fetch("/static/sources.json")).json()}catch(x){}
- try{var r=await fetch("/api/status");var d=await r.json();if(d.pro){S.pro=true;S.ref=d.ref;S.step=3}}catch(x){}
- if(q.indexOf("paid=1")>-1){S.msg="Payment confirmed. Forgenix Pro is active.";S.step=3}
- if(q.indexOf("failed=1")>-1){S.msg="Payment could not be confirmed. If money left your account, contact support with your payment reference.";S.step=4}
- history.replaceState(null,"",location.pathname);R();})();
-if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("/service-worker.js").catch(function(err){console.error("Service worker registration failed:",err)})})}
-</script></body></html>
+if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("/service-worker.js").catch(error=>console.error("Service worker registration failed:",error)));
+start();
+</script>
+</body>
+</html>

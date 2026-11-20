@@ -1,43 +1,56 @@
-# Forgenix web app (with Interswitch Web Checkout)
+# Forgenix
 
-Flow: goal -> learning path -> matched opportunities -> Pro plan -> redirect to the Interswitch payment page -> back to the app -> server confirms the payment -> Pro unlocks.
+A mobile-first learning app for exploring a technology career, practising with original project briefs, and saving progress. The complete starter path is free. Accounts are optional and add progress sync across devices; Pro checkout is optional and is not required for learning.
 
-## Run it
-    pip install -r requirements.txt
-    python app.py
+## Run locally
 
-On this computer, open http://localhost:5000.
+```powershell
+pip install -r requirements.txt
+python app.py
+```
 
-## Open it on another device on the same Wi-Fi
-1. Start the app with `python app.py` and leave that terminal open.
-2. On this computer, run `ipconfig` and find the **IPv4 Address** for the Wi-Fi adapter (for example, `192.168.0.102`).
-3. On the other device, open `http://<IPv4-address>:5000` (for example, `http://192.168.0.102:5000`). Both devices must be on the same network.
-4. If Windows asks, allow Python through Windows Defender Firewall on **Private networks**. If it does not ask and the page cannot be reached, allow inbound TCP port 5000 on the Private profile.
+Open http://localhost:5000. The SQLite database is created at `instance/forgenix.sqlite3` by default. Change its location with `DATABASE_PATH`.
 
-The address may change when the computer reconnects to Wi-Fi. This is only for devices on your local network; for access over the internet, deploy to a Python host or use a secure tunnel as described below.
+Run the test suite:
 
-## Interswitch settings (environment variables)
-- `ISW_MERCHANT_CODE`, `ISW_PAY_ITEM_ID`: from your Interswitch developer console. The defaults are the sample sandbox values from Interswitch's docs and may not work; see their "Default Test Credentials" page.
-- `ISW_MODE`: `TEST` (default) or `LIVE`.
-- `PUBLIC_URL`: where Interswitch sends the customer back. Default `http://localhost:5000` works on your own computer. When deployed, set it to your real https address.
-- `SECRET_KEY`: any long random string (needed in production).
+```powershell
+python -m unittest discover -s tests -v
+```
 
-Test with Interswitch test cards: https://docs.interswitchgroup.com/docs/test-cards
+## Learning and progress
 
-## Share with teammates
-For a public HTTPS URL, deploy this app folder to a Python host such as Render:
-1. Put only this app folder in its own Git repository and push it to GitHub. Do not publish the folder that contains it.
-2. Create a Python web service on your host, using `pip install -r requirements.txt` as the build command and `gunicorn app:app` as the start command.
-3. Set `SECRET_KEY` to a long, random value, and set `PUBLIC_URL` to the service's public HTTPS URL (for example, `https://your-app.onrender.com`). HTTPS is required for installation and is enabled for session cookies when `PUBLIC_URL` starts with `https://`.
-4. Open that HTTPS URL on your phone. On iPhone, use Safari's **Share → Add to Home Screen**; on Android, use Chrome's **Install app** or **Add to Home screen**.
+- Each career path contains four original activities, concrete deliverables, and a self-review checklist. The app does not claim that completion is a credential or verified qualification.
+- Guest progress is saved in browser storage on that device. Creating a free account uploads progress and makes it available when signing in elsewhere.
+- Accounts store an email address, a password hash, the selected path, weekly pace, completed modules, and subscription expiry. They do not store payment-card details.
+- Use a persistent database volume in a hosted deployment. For example, mount a durable volume at `/var/data` and set `DATABASE_PATH=/var/data/forgenix.sqlite3`. If the host's filesystem is ephemeral, account progress and subscriptions can be lost when the service restarts; migrate to a managed database before relying on them.
 
-The manifest and service worker make the app installable and let its shell load offline; payment and other server features still require an internet connection. Do not use the local-network address as `PUBLIC_URL` for payment callbacks; Interswitch needs a publicly reachable URL.
+## Deploy to a Python host
 
-## Before real money
-- Pending orders are kept in memory and the Pro unlock lives in a cookie. Move both to a database tied to user accounts.
-- Price (NGN 2,000/month) is a placeholder.
-- Web Checkout is one-time. Auto-renewal needs Interswitch's Recurring Payments API.
-- Payments are confirmed with a server-side requery in `payment_response`. Keep that check.
+The GitHub repository is [davidwithskills/Forgenix---Webapp](https://github.com/davidwithskills/Forgenix---Webapp). On a Python web host such as Render, create a Web Service for its `main` branch:
 
-## Source and licence lines
-Each module in the learning path shows its source and licence. They are read from `static/sources.json`, so you can edit them without touching code. Entries marked "to be added" are placeholders: only list material whose licence you have checked yourself, and avoid non-commercial (NC) licences for the paid plan. Check the licence of any source on the day you add it, because licences can change.
+- Build command: `pip install -r requirements.txt`
+- Start command: `gunicorn app:app`
+- Set `SECRET_KEY` to a long, unique random value.
+- Set `PUBLIC_URL` to the service's public HTTPS URL, for example `https://your-app.onrender.com`.
+- Set `DATABASE_PATH` to a file on a persistent mounted volume if the host supports one.
+
+Render's `RENDER_EXTERNAL_URL` is used as the public URL if `PUBLIC_URL` is omitted. If `SECRET_KEY` is omitted, the app generates a new random key at startup, which signs sessions safely but signs users out after each restart. The host must be able to install the dependencies in `requirements.txt`. A successful deploy makes the site available at its HTTPS URL. On iPhone, open that URL in Safari and choose **Share → Add to Home Screen**. On Android, open it in Chrome and choose **Install app** or **Add to Home screen**.
+
+## Payments
+
+Interswitch is configured in `TEST` mode by default. The credentials in the code are documented sample values and may not be valid merchant credentials. Configure these environment variables with values from your Interswitch account:
+
+- `ISW_MERCHANT_CODE`
+- `ISW_PAY_ITEM_ID`
+- `ISW_MODE` (`TEST` or `LIVE`)
+- `PUBLIC_URL` (required for the payment return URL)
+
+Live mode refuses to start checkout when the sample or missing merchant credentials are detected. The ₦2,000 monthly price is a placeholder. Pro is optional, does not auto-renew, and must not be marketed as purchasable until the merchant account, price, callback, and persistence have been confirmed. Payment status is checked server-side with Interswitch; do not remove that check.
+
+## Current limitations before production use
+
+- No password reset, email verification, account deletion, or login rate limiting is included. Add those before inviting the public to create accounts.
+- SQLite persistence depends on the host's persistent storage configuration. Back up the database and protect access to its volume.
+- Guest progress only exists in that browser's local storage until the user signs into an account.
+- The learning paths are starter activities, not accredited training or job placement. Opportunity matching and peer review are not implemented.
+- Review the deployment host's security, privacy, and backup settings before storing real user data.

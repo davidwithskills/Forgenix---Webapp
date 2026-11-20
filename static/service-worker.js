@@ -1,10 +1,11 @@
-const CACHE_NAME = "forgenix-shell-v1";
+const CACHE_NAME = "forgenix-shell-v3";
 const APP_SHELL = [
   "/",
   "/static/manifest.json",
   "/static/logo.png",
   "/static/icon-192.png",
   "/static/icon-512.png",
+  "/static/paths.json",
   "/static/sources.json"
 ];
 
