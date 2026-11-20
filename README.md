@@ -37,6 +37,10 @@ The GitHub repository is [davidwithskills/Forgenix---Webapp](https://github.com/
 
 Render's `RENDER_EXTERNAL_URL` is used as the public URL if `PUBLIC_URL` is omitted. If `SECRET_KEY` is omitted, the app generates a new random key at startup, which signs sessions safely but signs users out after each restart. The host must be able to install the dependencies in `requirements.txt`. A successful deploy makes the site available at its HTTPS URL. On iPhone, open that URL in Safari and choose **Share → Add to Home Screen**. On Android, open it in Chrome and choose **Install app** or **Add to Home screen**.
 
+## GitHub Pages landing page
+
+The static introduction lives in `docs/index.html`; it links visitors to the full Flask app on Render. A GitHub Actions workflow publishes it when `docs/` changes. In the repository, open **Settings → Pages**, choose **GitHub Actions** as the build and deployment source, and save. The landing page will then be available at `https://davidwithskills.github.io/Forgenix---Webapp/`. GitHub Pages only hosts the static landing page; accounts, progress syncing, and checkout stay on the Flask service.
+
 ## Payments
 
 Interswitch is configured in `TEST` mode by default. The credentials in the code are documented sample values and may not be valid merchant credentials. Configure these environment variables with values from your Interswitch account:
